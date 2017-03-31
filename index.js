@@ -12,11 +12,11 @@ var slice = Array.prototype.slice;
 var polyfill = getPolyfill();
 
 var boundFindShim = function find(array, predicate) { // eslint-disable-line no-unused-vars
-		if (array == null) {
-			throw new TypeError('Cannot call method on ' + array);
-		}
+	if (array == null) {
+		throw new TypeError('Cannot call method on ' + array);
+	}
 
-  var args = slice.call(arguments, 1)
+	var args = slice.call(arguments, 1);
 
 	return polyfill.apply(array, args);
 };
