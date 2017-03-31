@@ -24,8 +24,27 @@ suite.add('implementation', function () {
 	implementation.apply(array, [predicate]);
 });
 
+var nativeImpl = function nativeFn(a, p) {
+	Array.prototype.find.apply(a, [p]);
+};
+
 suite.add('native', function () {
-	Array.prototype.find.apply(array, [predicate]);
+	nativeImpl(array, predicate);
+});
+
+var forImpl = function forLoopFn(a, p) {
+	var length = a.length;
+	for (var i = 0; i < length; i++) {
+		var value = a[i];
+		if (p.apply(a, [value, i, a])) {
+			return value;
+		}
+	}
+	return undefined;
+};
+
+suite.add('for loop', function () {
+	forImpl(array, predicate);
 });
 
 suite.on('complete', function () {
