@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "array.prototype.find": "^2.0.3",
+    "benchmark": "^2.1.4"
+  }
+}
