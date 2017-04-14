@@ -6,31 +6,27 @@ var npm = require('array.prototype.find');
 var current = require('..');
 var implementation = current.implementation;
 
-var array = [1, 2, 3, 4, 15, 28, 42, 89];
-
-var predicate = function predicateFn(item) {
+var only = [15];
+var onlyPredicate = function onlyPredicateFn(item) {
 	return item === 15;
 };
 
-suite.add('npm', function () {
-	npm(array, predicate);
-});
-
-suite.add('current', function () {
-	current(array, predicate);
-});
-
-suite.add('implementation', function () {
-	implementation.apply(array, [predicate]);
-});
-
-var nativeImpl = function nativeFn(a, p) {
-	Array.prototype.find.apply(a, [p]);
+var positive = Array(100);
+positive[50] = 15;
+var positivePredicate = function positivePredicateFn(item) {
+	return item === 15;
 };
 
-suite.add('native', function () {
-	nativeImpl(array, predicate);
-});
+var negative = Array(100);
+var negativePredicate = function negativePredicateFn(item) {
+	return item === 15;
+};
+
+var veryBig = Array(1000000);
+veryBig[1000000] = 15;
+var veryBigPredicate = function veryBigPredicateFn(item) {
+	return item === 15;
+};
 
 var forImpl = function forLoopFn(a, p) {
 	var length = a.length;
@@ -43,9 +39,29 @@ var forImpl = function forLoopFn(a, p) {
 	return undefined;
 };
 
-suite.add('for loop', function () {
-	forImpl(array, predicate);
-});
+suite.add('[npm] only', function () { npm(only, onlyPredicate); });
+suite.add('[current] only', function () { current(only, onlyPredicate); });
+suite.add('[implementation] only', function () { implementation.apply(only, [onlyPredicate]); });
+suite.add('[native] only', function () { only.find(onlyPredicate); });
+suite.add('[for] only', function () { forImpl(only, onlyPredicate); });
+
+suite.add('[npm] positive', function () { npm(positive, positivePredicate); });
+suite.add('[current] positive', function () { current(positive, positivePredicate); });
+suite.add('[implementation] positive', function () { implementation.apply(positive, [positivePredicate]); });
+suite.add('[native] positive', function () { positive.find(positivePredicate); });
+suite.add('[for] positive', function () { forImpl(positive, positivePredicate); });
+
+suite.add('[npm] negative', function () { npm(negative, negativePredicate); });
+suite.add('[current] negative', function () { current(negative, negativePredicate); });
+suite.add('[implementation] negative', function () { implementation.apply(negative, [negativePredicate]); });
+suite.add('[native] negative', function () { negative.find(negativePredicate); });
+suite.add('[for] negative', function () { forImpl(negative, negativePredicate); });
+
+suite.add('[npm] veryBig', function () { npm(veryBig, veryBigPredicate); });
+suite.add('[current] veryBig', function () { current(veryBig, veryBigPredicate); });
+suite.add('[implementation] veryBig', function () { implementation.apply(veryBig, [veryBigPredicate]); });
+suite.add('[native] veryBig', function () { veryBig.find(veryBigPredicate); });
+suite.add('[for] veryBig', function () { forImpl(veryBig, veryBigPredicate); });
 
 suite.on('complete', function () {
 	var length = this.length;
